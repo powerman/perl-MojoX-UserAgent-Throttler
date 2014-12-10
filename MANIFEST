@@ -1,0 +1,19 @@
+Build.PL
+Changes
+lib/MojoX/UserAgent/Throttler.pm
+MANIFEST			This list of files
+README
+t/.perlcriticrc
+t/00.load.t
+t/manifest.t
+t/perlcritic.t
+t/pod-coverage.t
+t/pod.t
+t/problem-delayed-fixed.t
+t/problem-delayed.t
+t/problem-start-fixed.t
+t/problem-start.t
+t/problem_start.pm
+t/share.pm
+META.yml
+META.json
