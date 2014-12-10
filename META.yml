@@ -21,7 +21,7 @@ name: MojoX-UserAgent-Throttler
 provides:
   MojoX::UserAgent::Throttler:
     file: lib/MojoX/UserAgent/Throttler.pm
-    version: v0.1.0
+    version: v0.1.1
 requires:
   Mojolicious: '5.41'
   Sub::Throttler: v0.2.0
@@ -30,4 +30,4 @@ requires:
   version: '0.77'
 resources:
   license: http://www.opensource.org/licenses/mit-license.php
-version: v0.1.0
+version: v0.1.1

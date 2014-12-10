@@ -2,7 +2,7 @@ package MojoX::UserAgent::Throttler;
 
 use Mojo::Base -strict;
 
-use version; our $VERSION = qv('0.1.0');    # REMINDER: update Changes
+use version; our $VERSION = qv('0.1.1');    # REMINDER: update Changes
 
 # REMINDER: update dependencies in Build.PL
 use Mojo::UserAgent;
@@ -144,9 +144,9 @@ request method, hostname, etc.
             if (!$cb) {
                 return;
             } elsif ('GET' eq uc $tx->req->method) {
-                return { host => $tx->req->url->host };
+                return { $tx->req->url->host => 1 };
             } else {
-                return { ua_method => "$this " . uc $tx->req->method };
+                return { "$this " . uc $tx->req->method => 1 };
             }
         }
         return;
