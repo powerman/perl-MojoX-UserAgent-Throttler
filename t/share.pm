@@ -16,7 +16,7 @@ monkey_patch 'Mojo::UserAgent', ioloop => sub { Mojo::IOLoop->singleton };
 
 # setup local http server on random port
 our $SITE = 'http://127.0.0.1';
-our $_daemon = Mojo::Server::Daemon->new(app=>app, listen=>["$SITE:*"], silent=>1)->start;
+our $_daemon = Mojo::Server::Daemon->new(app=>app, listen=>["$SITE:0"], silent=>1)->start;
 $SITE .= ':' . Mojo::IOLoop->acceptor($_daemon->acceptors->[0])->handle->sockport;
 
 ### lazy helpers
