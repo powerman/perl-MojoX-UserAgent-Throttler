@@ -7,7 +7,7 @@ use vars qw( $SITE );
 # avoid (in cleanup) error (should be fixed in Mojolicious-5.69)
 my $orig_DESTROY = \&Mojo::UserAgent::DESTROY;
 monkey_patch 'Mojo::UserAgent', DESTROY => sub {
-    $_[0]->ioloop(undef) if ${^GLOBAL_PHASE} eq 'DESTRUCT';
+    $_[0]->ioloop(undef) if (${^GLOBAL_PHASE}||q{}) eq 'DESTRUCT';
     goto &$orig_DESTROY;
 };
 

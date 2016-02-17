@@ -2,9 +2,8 @@ package MojoX::UserAgent::Throttler;
 
 use Mojo::Base -strict;
 
-use version; our $VERSION = qv('0.1.1');    # REMINDER: update Changes
+our $VERSION = 'v0.1.1';
 
-# REMINDER: update dependencies in Build.PL
 use Mojo::UserAgent;
 use Mojo::Util qw( monkey_patch );
 use Sub::Util 1.40 qw( set_subname );
@@ -74,12 +73,28 @@ DESTROY => sub {
     $IsDestroying{ $self } = 1;
     for (values %{ delete $Delayed{ $self } || {} }) {
         my ($tx, $cb) = @{ $_ };
-        $cb->($self, $tx->client_close(1));
+        $cb->($self, _client_close($tx, 1));
     }
     $self->$ORIG_DESTROY;
     delete $IsDestroying{ $self };
     return;
 };
+
+# This is a replacement of $tx->client_close() removed in Mojolicious 6.43.
+sub _client_close {
+    ## no critic(ProhibitAmbiguousNames,ProhibitMagicNumbers)
+    my ($self, $close) = @_;
+
+    my $res = $self->completed->emit('finish')->res->finish;
+    if ($close && !$res->code && !$res->error) {
+        $res->error({message => 'Premature connection close'});
+    }
+    elsif ($res->is_status_class(400) || $res->is_status_class(500)) {
+        $res->error({message => $res->message, code => $res->code});
+    }
+
+    return $self;
+}
 
 
 1; # Magic true value required at end of module
@@ -90,6 +105,11 @@ __END__
 =head1 NAME
 
 MojoX::UserAgent::Throttler - add throttling support to Mojo::UserAgent
+
+
+=head1 VERSION
+
+This document describes MojoX::UserAgent::Throttler version v0.1.1
 
 
 =head1 SYNOPSIS
@@ -153,71 +173,63 @@ request method, hostname, etc.
     });
 
 
-=head1 BUGS AND LIMITATIONS
-
-No bugs have been reported.
-
-
 =head1 SUPPORT
 
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=MojoX-UserAgent-Throttler>.
-I will be notified, and then you'll automatically be notified of progress
-on your bug as I make changes.
+=head2 Bugs / Feature Requests
 
-You can also look for information at:
+Please report any bugs or feature requests through the issue tracker
+at L<https://github.com/powerman/perl-MojoX-UserAgent-Throttler/issues>.
+You will be notified automatically of any progress on your issue.
+
+=head2 Source Code
+
+This is open source software. The code repository is available for
+public review and contribution under the terms of the license.
+Feel free to fork the repository and submit pull requests.
+
+L<https://github.com/powerman/perl-MojoX-UserAgent-Throttler>
+
+    git clone https://github.com/powerman/perl-MojoX-UserAgent-Throttler.git
+
+=head2 Resources
 
 =over
 
-=item * RT: CPAN's request tracker
+=item * MetaCPAN Search
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=MojoX-UserAgent-Throttler>
+L<https://metacpan.org/search?q=MojoX-UserAgent-Throttler>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/dist/MojoX-UserAgent-Throttler>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
 L<http://annocpan.org/dist/MojoX-UserAgent-Throttler>
 
-=item * CPAN Ratings
+=item * CPAN Testers Matrix
 
-L<http://cpanratings.perl.org/d/MojoX-UserAgent-Throttler>
+L<http://matrix.cpantesters.org/?dist=MojoX-UserAgent-Throttler>
 
-=item * Search CPAN
+=item * CPANTS: A CPAN Testing Service (Kwalitee)
 
-L<http://search.cpan.org/dist/MojoX-UserAgent-Throttler/>
+L<http://cpants.cpanauthors.org/dist/MojoX-UserAgent-Throttler>
 
 =back
 
 
 =head1 AUTHOR
 
-Alex Efros  C<< <powerman@cpan.org> >>
+Alex Efros E<lt>powerman@cpan.orgE<gt>
 
 
-=head1 LICENSE AND COPYRIGHT
+=head1 COPYRIGHT AND LICENSE
 
-Copyright 2014 Alex Efros <powerman@cpan.org>.
+This software is Copyright (c) 2014 by Alex Efros E<lt>powerman@cpan.orgE<gt>.
 
-This program is distributed under the MIT (X11) License:
-L<http://www.opensource.org/licenses/mit-license.php>
+This is free software, licensed under:
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+  The MIT (X11) License
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
+=cut
