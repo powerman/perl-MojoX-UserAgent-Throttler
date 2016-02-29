@@ -7,7 +7,7 @@ MojoX::UserAgent::Throttler - add throttling support to Mojo::UserAgent
 
 # VERSION
 
-This document describes MojoX::UserAgent::Throttler version v1.0.0
+This document describes MojoX::UserAgent::Throttler version v1.0.1
 
 # SYNOPSIS
 
