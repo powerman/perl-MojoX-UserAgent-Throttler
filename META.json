@@ -42,7 +42,7 @@
             "Mojo::Base" : "0",
             "Mojo::UserAgent" : "0",
             "Mojo::Util" : "0",
-            "Mojolicious" : "5.41",
+            "Mojolicious" : "6.40",
             "Sub::Throttler" : "v0.2.0",
             "Sub::Util" : "1.40",
             "perl" : "5.010001"

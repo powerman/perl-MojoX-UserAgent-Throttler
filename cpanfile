@@ -3,7 +3,7 @@ requires 'perl', '5.010001';
 requires 'Mojo::Base';
 requires 'Mojo::UserAgent';
 requires 'Mojo::Util';
-requires 'Mojolicious', '5.41';
+requires 'Mojolicious', '6.40';
 requires 'Sub::Throttler', 'v0.2.0';
 requires 'Sub::Util', '1.40';
 
