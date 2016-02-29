@@ -1,6 +1,7 @@
 Revision history for MojoX-UserAgent-Throttler
 
 {{$NEXT}}
+	- Reformat doc.
 
 v1.0.0  2016-02-18 01:06:17 EET
 	- Switch to Dist::Milla.
