@@ -2,6 +2,9 @@ Revision history for MojoX-UserAgent-Throttler
 
 {{$NEXT}}
 
+v1.0.2  2017-02-22 06:51:27 EET
+	- Require Mojolicious-7.13.
+
 v1.0.1  2016-03-01 01:03:06 EET
 	- Require Mojolicious-6.40.
 
