@@ -89,7 +89,7 @@ sub _client_close {
     if ($close && !$res->code && !$res->error) {
         $res->error({message => 'Premature connection close'});
     }
-    elsif ($res->is_status_class(400) || $res->is_status_class(500)) {
+    elsif ($res->is_error) {
         $res->error({message => $res->message, code => $res->code});
     }
 

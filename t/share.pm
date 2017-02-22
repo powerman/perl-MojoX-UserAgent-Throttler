@@ -1,7 +1,7 @@
 use Mojo::Base -strict;
 use Test::More;
 use ojo;
-use Mojo::Util qw( monkey_patch );
+use Mojo::Util qw( monkey_patch trim );
 use vars qw( $SITE );
 
 # avoid (in cleanup) error (should be fixed in Mojolicious-5.69)

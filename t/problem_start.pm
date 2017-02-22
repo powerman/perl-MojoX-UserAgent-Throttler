@@ -35,7 +35,7 @@ sub run_tests {
     $ua->get("$SITE/slow", sub {
         my ($this, $tx) = @_;
         event('cb1');
-        event($this->get("$SITE/fast")->res->text);
+        event(trim($this->get("$SITE/fast")->res->text));
     });
     wait_err();
     undef $ua;
