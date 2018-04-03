@@ -22,7 +22,7 @@ $SITE .= ':' . Mojo::IOLoop->acceptor($_daemon->acceptors->[0])->handle->sockpor
 ### lazy helpers
 sub start () { Mojo::IOLoop->start }
 sub stop () { Mojo::IOLoop->stop }
-sub diag_tx ($;$) {
+sub diag_tx :prototype($;$) {
     my ($tx, $pfx) = @_;
     $pfx .= ': ' if defined $pfx;
     diag $pfx, $tx->error ? $tx->error->{message} : $tx->res->text;
@@ -39,12 +39,12 @@ sub event {
     return;
 }
 
-sub is_events ($;$) {
+sub is_events :prototype($;$) {
     unshift @_, event();
     goto &is_deeply;
 }
 
-sub is_events_anyorder ($;$) {
+sub is_events_anyorder :prototype($;$) {
     unshift @_, [ sort @{ event() } ];
     $_[1] = [ sort @{ $_[1] } ];
     goto &is_deeply;
