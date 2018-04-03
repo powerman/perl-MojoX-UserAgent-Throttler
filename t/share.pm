@@ -3,6 +3,7 @@ use Test::More;
 use ojo;
 use Mojo::Util qw( monkey_patch trim );
 use vars qw( $SITE );
+no feature 'signatures';
 
 # avoid (in cleanup) error (should be fixed in Mojolicious-5.69)
 my $orig_DESTROY = \&Mojo::UserAgent::DESTROY;
@@ -22,7 +23,7 @@ $SITE .= ':' . Mojo::IOLoop->acceptor($_daemon->acceptors->[0])->handle->sockpor
 ### lazy helpers
 sub start () { Mojo::IOLoop->start }
 sub stop () { Mojo::IOLoop->stop }
-sub diag_tx :prototype($;$) {
+sub diag_tx ($;$) {
     my ($tx, $pfx) = @_;
     $pfx .= ': ' if defined $pfx;
     diag $pfx, $tx->error ? $tx->error->{message} : $tx->res->text;
@@ -39,12 +40,12 @@ sub event {
     return;
 }
 
-sub is_events :prototype($;$) {
+sub is_events ($;$) {
     unshift @_, event();
     goto &is_deeply;
 }
 
-sub is_events_anyorder :prototype($;$) {
+sub is_events_anyorder ($;$) {
     unshift @_, [ sort @{ event() } ];
     $_[1] = [ sort @{ $_[1] } ];
     goto &is_deeply;
